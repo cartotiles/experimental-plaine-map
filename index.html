@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title></title>
+<link rel="stylesheet" type="text/css" href="mapbox-gl.css"/>
+<style>
+body { margin: 0; top: 0; bottom: 0; width: 100%; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+<script src="mapbox-gl.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+map = new mapboxgl.Map({
+  container: 'map', 
+  attributionControl: true, hash: true, maxZoom: 4,
+  style: {
+    version: 8,
+    sources: {
+      v: {
+        type: 'vector',
+        tiles: ['https://cartotiles.github.io/experimental-plaine-map/ne_z2/{z}/{x}/{y}.pbf'],
+        attribution: 'Testing (Natural Earth data edited).<br>The boundaries and names shown and the designations used on this map do not imply official endorsement or acceptance by the United Nations.<br>Final boundary between the Republic of Sudan and the Republic of South Sudan has not yet been determined.<br>*Dotted line represents approximately the Line of Control in Jammu and Kashmir agreed upon by India and Pakistan. The final status of Jammu and Kashmir has not yet been agreed upon by the parties.<br>**A dispute exists between the Governments of Argentina and the United Kingdom of Great Britain and Northern Ireland concerning sovereignty over the Falkland Islands (Malvinas).<br>The initials in parentheses refer to the administering Power or the Power involved in a special treaty relationship.',
+        maxzoom: 2,
+        minzoom: 0
+      }
+    },
+    glyphs: 'font/{fontstack}/{range}.pbf',
+    transition: {
+      duration: 0,
+      delay: 0
+    },
+    layers: [
+      {
+        id: 'back',
+        type: 'background',
+        layout: {'visibility':'visible'},
+        paint: {
+          'background-color': ['rgb', 146, 171, 230]
+        }
+      },
+      {
+        id: 'bnda',
+        type: 'fill',
+        source: 'v',
+        'source-layer': 'bnda',
+        paint: {
+          'fill-color': ['rgb', 220, 213, 143]
+        }
+      },
+      {
+        id: 'bndl_intl',
+        type: 'line',
+        source: 'v',
+        'source-layer': 'bndl',
+        maxzoom: 5,
+        minzoom: 0,
+        filter: [
+        'all',
+        ['==', 'Bdytyp', 'International boundary']
+        ],
+        paint: {
+          'line-color': ['rgb', 92, 99, 102],
+          'line-dasharray': [6,1,1,1,1,1],
+          'line-width': 1
+        }
+      },
+      {
+        id: 'bndl_armis',
+        type: 'line',
+        source: 'v',
+        'source-layer': 'bndl',
+        maxzoom: 5,
+        minzoom: 0,
+        filter: [
+        'all',
+        ['==', 'Bdytyp', 'Armistice or International administrative line']
+        ],
+        paint: {
+          'line-color': ['rgb', 92, 99, 102],
+          'line-dasharray': [6,1],
+          'line-width': 1
+        }
+      },
+      {
+        id: 'bndl_other',
+        type: 'line',
+        source: 'v',
+        'source-layer': 'bndl',
+        maxzoom: 5,
+        minzoom: 0,
+        filter: [
+        'all',
+        ['==', 'Bdytyp', 'Other line of separation']
+        ],
+        paint: {
+          'line-color': ['rgb', 92, 99, 102],
+          'line-dasharray': [6,6],
+          'line-width': 1
+        }
+      },
+      {
+        id: 'bndl_special',
+        type: 'line',
+        source: 'v',
+        'source-layer': 'bndl',
+        maxzoom: 5,
+        minzoom: 0,
+        filter: [
+        'all',
+        ['==', 'Bdytyp', 'Special boundary line']
+        ],
+        paint: {
+          'line-color': ['rgb', 92, 99, 102],
+          'line-dasharray': [3,3],
+          'line-width': 1
+        }
+      },
+      {
+        id: 'text',
+        type: 'symbol',
+        source: 'v',
+        'source-layer': 'label',
+        maxzoom: 5,
+        minzoom: 2,
+        layout: {
+          'text-field': [
+            'step',
+            ['zoom'],
+            ['get', 'ISO3CD'],
+            4,
+            ['get', 'MAPLAB']
+          ],
+          'text-font': ['sans'],
+          'text-size': [
+            'step',
+            ['zoom'],
+            9,
+            1,
+            14
+          ],
+          'text-allow-overlap': true
+        },
+        paint: {
+        }
+      }
+    ]
+  }
+})
+map.on('load', function() {
+  map.addControl(new mapboxgl.NavigationControl())
+})
+</script>
+</body>
+</html>

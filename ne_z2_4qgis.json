@@ -1,0 +1,16 @@
+{
+  "tilejson": "2.2.0",
+  "tiles": ["https://cartotiles.github.io/experimental-plaine-map/ne_z2/{z}/{x}/{y}.pbf"],
+  "name": "ne_test2",
+  "attribution": "test",
+  "maxzoom": 2,
+  "minzoom": 0,
+  "bounds": [-180,-50.00,180.00,60.00],
+  "center": [0,0,0],
+  "vector_layers": [{
+    "id": "test",
+    "description": "test",
+    "maxzoom": 2,
+    "minzoom": 0
+  }]
+}
